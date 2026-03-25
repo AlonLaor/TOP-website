@@ -44,11 +44,12 @@ html {
 }
 
 body {
-  font-family: var(--font-sans);
+   font-family: var(--font-sans);
   color: var(--color-text-primary);
   background: var(--color-bg-white);
   line-height: 1.6;
   overflow-x: hidden;
+  font-variant-ligatures: none;
 }
 
 .container {
