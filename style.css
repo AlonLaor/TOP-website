@@ -1199,3 +1199,6 @@ ul { list-style: none; }
   .asm-outcome-grid { grid-template-columns: 1fr; }
   .about-card-stack { flex-direction: column; }
 }
+.text-turquoise {
+  color: turquoise;
+}
