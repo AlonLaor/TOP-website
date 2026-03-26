@@ -1200,5 +1200,5 @@ ul { list-style: none; }
   .about-card-stack { flex-direction: column; }
 }
 .text-turquoise {
-  color: turquoise;
+  color: rgb(73, 201, 71);
 }
