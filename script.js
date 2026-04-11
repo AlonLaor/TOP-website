@@ -68,30 +68,40 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // ========================================
-// CTA Form Handler
+// CTA Form Handler — Formspree
 // ========================================
 const ctaForm = document.getElementById('ctaForm');
 const ctaSuccess = document.getElementById('ctaSuccess');
 
-ctaForm.addEventListener('submit', function(e) {
+ctaForm.addEventListener('submit', async function(e) {
   e.preventDefault();
 
-  const name = document.getElementById('userName').value;
-  const email = document.getElementById('userEmail').value;
+  const submitBtn = ctaForm.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  submitBtn.querySelector('span').textContent = 'Sending…';
 
-  // In production, this would send the data to a backend service
-  // For now, we show the success state and log the submission
-  console.log('Form submitted:', { name, email });
+  try {
+    const response = await fetch('https://formspree.io/f/mreonyzj', {
+      method: 'POST',
+      body: new FormData(ctaForm),
+      headers: { 'Accept': 'application/json' }
+    });
 
-  // Hide form, show success
-  ctaForm.style.display = 'none';
-  document.querySelector('.cta-privacy').style.display = 'none';
-  ctaSuccess.classList.add('show');
-
-  // Store in localStorage as a simple record
-  const submissions = JSON.parse(localStorage.getItem('top_submissions') || '[]');
-  submissions.push({ name, email, date: new Date().toISOString() });
-  localStorage.setItem('top_submissions', JSON.stringify(submissions));
+    if (response.ok) {
+      // Hide form, show success
+      ctaForm.style.display = 'none';
+      document.querySelector('.cta-privacy').style.display = 'none';
+      ctaSuccess.classList.add('show');
+    } else {
+      submitBtn.disabled = false;
+      submitBtn.querySelector('span').textContent = 'Send Me the Blueprint';
+      alert('Something went wrong. Please try again.');
+    }
+  } catch (err) {
+    submitBtn.disabled = false;
+    submitBtn.querySelector('span').textContent = 'Send Me the Blueprint';
+    alert('Network error. Please check your connection and try again.');
+  }
 });
 
 // ========================================
